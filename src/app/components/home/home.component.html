@@ -1,0 +1,36 @@
+<section id="home-section">
+    <div class="search-container">
+        <div class="search-box">
+            <form #f="ngForm">
+                <mat-form-field appearance="fill" class="country-filter-text">
+                    <mat-label>Country</mat-label>
+                    <input required matInput type="text" id="countryFilterText" name="countryFilterText" [(ngModel)]="countryFilterText" countryFilterText pattern="^[A-Za-z]{2,}$">
+                    <mat-error *ngIf="(!countryFilterText.valid)">
+                        Type a valid Country name
+                    </mat-error>
+                    <button *ngIf="countryFilterText" matSuffix mat-icon-button aria-label="Clear" (click)="countryFilterText=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+                <button [disabled]="!f.valid" class="search-icon" mat-icon-button aria-label="Search" (click)="filterByCountry()">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </form>
+        </div>
+        <div class="filter-countries__result">
+            <div *ngIf="loadingData && this.countryFilteredResult.length == 0" class="country-filter-loading">
+                <mat-progress-bar mode="buffer"></mat-progress-bar>
+            </div>
+            <div *ngIf="this.countryFilteredResult.length > 0">
+                <div *ngFor="let country of this.countryFilteredResult;let i = index;" class="filtered-country">
+                    <p (click)="navigateToCountry(i)">{{ country.name }}</p>
+                </div>
+            </div>
+            <div *ngIf="!loadingData && this.countryFilteredResult.length == 0" class="country-filter-loading">
+                No Country Found.
+            </div>
+        </div>
+    </div>
+    <div class="esri-map" id="viewDiv">
+    </div>
+</section>
